@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - GPDI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      color: #f1f1f1;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body {
+      background: linear-gradient(
+              rgba(0, 0, 0, 0.7),
+              rgba(0, 0, 0, 0.8)
+            ),
+            url('https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=1920&q=80')
+            no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 20%, rgba(255,255,200,0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 60%, rgba(255,200,150,0.15) 0%, transparent 40%);
+      z-index: -1;
+    }
+
+    /* ================= NAVBAR (SAMA DENGAN HOME) ================= */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 25px;
+      background: rgba(28,28,28,0.9);
+      color: white;
+      z-index: 1000;
+      backdrop-filter: blur(6px);
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+    nav .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    nav .logo img {
+      width: 40px;
+      height: 40px;
+    }
+    nav .logo span {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    nav .menu {
+      display: flex;
+      gap: 30px;
+      margin-right: 20px;
+      list-style: none;
+      transition: max-height 0.4s ease;
+    }
+    nav .menu li a {
+      position: relative;
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: color 0.3s, background 0.3s;
+    }
+    nav .menu li a:hover {
+      background-color: #f4d03f;
+      color: #000;
+    }
+    nav .menu li a.active {
+      color: #f4d03f;
+      font-weight: 600;
+    }
+
+    /* === Burger Menu (sama dengan home) === */
+    .burger {
+      display: none;
+      width: 22px;
+      height: 16px;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .burger span {
+      position: absolute;
+      height: 2px;
+      width: 100%;
+      background: white;
+      left: 0;
+      transition: all 0.3s ease;
+    }
+    .burger span:nth-child(1) { top: 0; }
+    .burger span:nth-child(2) { top: 8px; }
+    .burger span:nth-child(3) { top: 16px; }
+
+    nav.active .burger span:nth-child(1) {
+      transform: rotate(45deg);
+      top: 8px;
+    }
+    nav.active .burger span:nth-child(2) {
+      opacity: 0;
+    }
+    nav.active .burger span:nth-child(3) {
+      transform: rotate(-45deg);
+      top: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .burger {
+        display: block;
+      }
+      nav .menu {
+        flex-direction: column;
+        background: rgba(28,28,28,0.95);
+        position: absolute;
+        top: 38px;
+        right: -16px;
+        width: 200px;
+        max-height: 0;
+        overflow: hidden;
+        padding: 0;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.2);
+        transition: max-height 0.4s ease;
+      }
+      nav.active .menu {
+        max-height: 500px;
+        padding: 15px 0;
+      }
+      nav .menu li {
+        text-align: center;
+        margin: 9px 0;
+      }
+    }
+    /* ============================================================ */
+
+    .hero {
+      margin-top: 80px;
+      position: relative;
+      height: 240px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(5px);
+      border-bottom: 2px solid rgba(255,255,255,0.1);
+      box-shadow: inset 0 0 60px rgba(255, 240, 200, 0.1);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #f4d03f, #f39c12, #f4d03f);
+      animation: light-move 6s linear infinite;
+      background-size: 200% 100%;
+    }
+
+    @keyframes light-move {
+      0% { background-position: 0 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    .hero h1 {
+      font-size: 44px;
+      margin: 0;
+      text-shadow: 0 3px 8px rgba(0,0,0,0.8);
+      letter-spacing: 1px;
+    }
+
+    .contact-section {
+      max-width: 1200px;
+      margin: 40px auto;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+      transition: transform 0.3s, box-shadow 0.3s;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease;
+    }
+    .card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+    }
+
+    .map {
+      grid-row: 1 / span 2;
+      grid-column: 1;
+    }
+    .map iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 600px;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    .contact-info h2 {
+      margin-top: 0;
+      color: #f4d03f;
+    }
+    .contact-info p {
+      margin: 8px 0;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .contact-info a {
+      color: #00aaff;
+      text-decoration: none;
+    }
+    .contact-info a:hover {
+      text-decoration: underline;
+    }
+
+    .jadwal h3 {
+      margin-top: 0;
+      font-size: 20px;
+      color: #f4d03f;
+    }
+    .jadwal table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .jadwal th, .jadwal td {
+      padding: 10px 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      text-align: left;
+      font-size: 15px;
+      color: #f1f1f1;
+    }
+    .jadwal th {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    footer {
+      text-align: center;
+      padding: 22px;
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      margin-top: 40px;
+      backdrop-filter: blur(4px);
+    }
+
+    @media(max-width: 900px) {
+      .contact-section {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+      }
+      .map {
+        grid-row: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">
+      <img src="logo.jpeg" alt="Logo GPDI">
+      <span>GPDI</span>
+    </div>
+
+    <div class="burger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <ul class="menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="schedule.html">Schedule</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <h1>Pelayanan Sekretariat</h1>
+  </section>
+
+  <section class="contact-section">
+    <div class="map card">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3967.2728392235313!2d106.68261417474945!3d-6.093903093892423!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6a0304121fae81%3A0x935c17bade76b235!2sGPdI%20DUTA%20BANDARA%20PERMAI!5e0!3m2!1sid!2sid!4v1758609056925!5m2!1sid!2sid" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+
+    <div class="contact-info card">
+      <h2>Sekretariat GPDI</h2>
+      <p>Email: <a href="mailto:sekretariat@gpdi.org">sekretariat@gpdi.org</a></p>
+      <p>Telepon: +62 858-1312-4990</p>
+      <p>Whatsapp: +62 8111 747 708</p>
+      <p>Alamat: Jl. Perumahan Duta Bandara Permai, Kosambi, Kabupaten Tangerang</p>
+    </div>
+
+    <div class="jadwal card">
+      <h3>Jam Kerja Sekretariat</h3>
+      <table>
+        <tr><th>Hari</th><th>Waktu</th></tr>
+        <tr><td>Senin</td><td>Tutup</td></tr>
+        <tr><td>Selasa</td><td>08.00–16.00</td></tr>
+        <tr><td>Rabu</td><td>08.00–16.00</td></tr>
+        <tr><td>Kamis</td><td>08.00–16.00</td></tr>
+        <tr><td>Jumat</td><td>08.00–16.00</td></tr>
+        <tr><td>Sabtu</td><td>08.00–19.00</td></tr>
+        <tr><td>Minggu</td><td>08.00–19.00</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 GPDI. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    // Animasi scroll untuk card
+    const cards = document.querySelectorAll(".card");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add("show");
+      });
+    }, { threshold: 0.2 });
+    cards.forEach(card => observer.observe(card));
+
+    // Burger menu (sama dengan home)
+    const burger = document.querySelector('.burger');
+    const nav = document.querySelector('nav');
+    burger.addEventListener('click', () => {
+      nav.classList.toggle('active');
+    });
+
+    // Tandai menu aktif otomatis
+    const currentPage = window.location.pathname.split("/").pop();
+    document.querySelectorAll("nav .menu li a").forEach(link => {
+      if (link.getAttribute("href") === currentPage) {
+        link.classList.add("active");
+      }
+    });
+  </script>
+</body>
+</html>

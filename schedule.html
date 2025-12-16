@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schedule - GPDI</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+  --accent: #f4d03f;
+  --bg-page: #f2f2f2;
+  --text-dark: #222;
+}
+
+/* RESET */
+* {margin:0; padding:0; box-sizing:border-box;}
+body {
+  font-family: "Poppins", Arial, sans-serif;
+  background: var(--bg-page);
+  color: var(--text-dark);
+}
+
+/* ==== NAVBAR (disamakan dengan home) ==== */
+nav {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 25px;
+  background: rgba(28,28,28,0.9);
+  color: white;
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+nav .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+nav .logo img {
+  width: 40px;
+  height: 40px;
+}
+nav .logo span {
+  font-size: 20px;
+  font-weight: bold;
+}
+nav .menu {
+  display: flex;
+  gap: 30px;
+  margin-right: 20px;
+  list-style: none;
+  transition: max-height 0.4s ease;
+}
+nav .menu li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: color 0.3s, background 0.3s;
+}
+nav .menu li a:hover {
+  background-color: var(--accent);
+  color: #000;
+}
+nav .menu li a.active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ==== BURGER MENU ==== */
+.burger {
+  display: none;
+  width: 22px;
+  height: 16px;
+  position: absolute;
+  right: 80px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.burger span {
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background: white;
+  left: 0;
+  transition: all 0.3s ease;
+}
+.burger span:nth-child(1) { top: 0; }
+.burger span:nth-child(2) { top: 8px; }
+.burger span:nth-child(3) { top: 16px; }
+
+nav.active .burger span:nth-child(1) {
+  transform: rotate(45deg);
+  top: 8px;
+}
+nav.active .burger span:nth-child(2) { opacity: 0; }
+nav.active .burger span:nth-child(3) {
+  transform: rotate(-45deg);
+  top: 8px;
+}
+
+/* Responsive menu */
+@media (max-width: 768px) {
+  .burger { display: block; }
+  nav .menu {
+    flex-direction: column;
+    background: rgba(28,28,28,0.95);
+    position: absolute;
+    top: 54px;
+    right: 45px;
+    width: 200px;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: max-height 0.4s ease;
+  }
+  nav.active .menu {
+    max-height: 500px;
+    padding: 15px 0;
+  }
+  nav .menu li {
+    text-align: center;
+    margin: 9px 0;
+  }
+}
+
+/* ==== HERO ==== */
+.hero {
+  position: relative;
+  background: linear-gradient(180deg, rgba(30,30,30,0.6), rgba(15,15,15,0.7)),
+              url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1600&q=80') center/cover;
+
+
+  color: #fff;
+  text-align: center;
+  padding: 150px 20px 130px;
+  margin-top: 10px;
+}
+.hero h1 {
+  font-size: 52px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+  text-shadow: 0 3px 10px rgba(0,0,0,0.6);
+  opacity: 0;
+  animation: fadeInDown 1.5s ease forwards;
+}
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==== SPECIAL EVENTS SLIDER (versi proporsional) ==== */
+.special-events {
+  text-align: center;
+  margin: 70px auto 50px;
+  max-width: 900px;
+  padding: 0 20px;
+}
+.special-events h2 {
+  font-size: 32px;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.event-slider {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+}
+
+/* background blur */
+.event-slider::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    url("bg-event.jpeg")
+    center / cover;
+
+  /* filter: blur(4px); */
+  transform: scale(1.1);
+  z-index: 0;
+}
+
+/* slider di atas */
+.event-slider * {
+  position: relative;
+  z-index: 1;
+}
+
+/* === SLIDER OPSI 1 (FADE + SCALE) === */
+
+.event-slider {
+  height: 500px; /* PENTING supaya slide kelihatan */
+}
+
+.slides {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.05);
+  transition: opacity 2s ease, transform 2s ease;
+}
+
+.slide.active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 16px;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  max-height: 500px; /* batasi tinggi maksimum */
+  display: block;
+  border-radius: 16px;
+  object-fit: contain; /* jaga poster tetap utuh */
+  position: relative;
+  z-index: 2;
+}
+
+/* Tombol navigasi */
+.event-slider button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.3s;
+  z-index: 5;
+}
+.event-slider button:hover {
+  background: rgba(0,0,0,0.7);
+}
+.prev { left: 15px; }
+.next { right: 15px; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .event-slider {
+    max-height: 400px;
+  }
+  .slide img {
+    max-height: 400px;
+  }
+}
+@media (max-width: 600px) {
+  .event-slider {
+    max-height: 320px;
+  }
+  .slide img {
+    max-height: 320px;
+  }
+  .special-events h2 {
+    font-size: 26px;
+  }
+}
+
+/* ==== SCHEDULE ==== */
+.schedule {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  max-width: 1100px;
+  margin: 80px auto;
+  padding: 0 20px;
+}
+.schedule-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 1s ease;
+}
+.schedule-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.schedule-item:nth-child(even) { flex-direction: row-reverse; }
+.schedule-item img {
+  width: 45%;
+  border-radius: 16px;
+  object-fit: cover;
+  height: 280px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+.schedule-text {
+  width: 50%;
+  text-align: left;
+  background: white;
+  padding: 25px 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.schedule-text h2 {
+  color: var(--accent);
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+.schedule-text p {
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+/* Animasi slide */
+.slide-left {
+  opacity: 0;
+  transform: translateX(-80px);
+  transition: all 1.5s ease;
+}
+.slide-right {
+  opacity: 0;
+  transform: translateX(80px);
+  transition: all 1.5s ease;
+}
+.slide-left.visible,
+.slide-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Footer */
+footer {
+  text-align:center;
+  padding:22px;
+  background:#111;
+  color:#fff;
+}
+
+/* Responsive content */
+@media(max-width:900px) {
+  .schedule-item {
+    flex-direction: column !important;
+    text-align: center;
+  }
+  .schedule-item img, .schedule-text {
+    width: 100%;
+  }
+  .schedule-text { text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav>
+  <div class="logo">
+    <img src="logo.jpeg" alt="Logo GPDI">
+    <span>GPDI</span>
+  </div>
+
+  <div class="burger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <ul class="menu">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="schedule.html">Schedule</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.html">Contact Us</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <h1>Jadwal Kegiatan Gereja</h1>
+</section>
+
+<!-- Event Spesial / Acara Tahunan -->
+<section class="special-events">
+  <h2>Special Event</h2>
+<div class="event-slider">
+
+  <div class="slides">
+    <div class="slide">
+      <img src="event1.jpeg" alt="event 1">
+    </div>
+    <div class="slide">
+      <img src="event2.jpeg" alt="event 2">
+    </div>
+  </div>
+  <button class="prev"><i class="fas fa-chevron-left"></i></button>
+  <button class="next"><i class="fas fa-chevron-right"></i></button>
+
+</div>
+
+</section>
+
+
+<!-- Schedule -->
+<div class="schedule">
+  <div class="schedule-item" id="first-item">
+    <img src="minggu.png" class="slide-left" alt="Ibadah Minggu">
+    <div class="schedule-text slide-right">
+      <h2>Minggu</h2>
+      <p>Ibadah umum pagi 08.00–10.00</p>
+      <p>Ibadah umum siang 10.30–12.00</p>
+      <p>Ibadah Sekolah Minggu 08.30–09.30.</p>
+    </div>
+  </div>
+
+  <div class="schedule-item">
+    <!-- ✅ Ganti gambar Selasa -->
+    <img src="selasa.png" class="slide-right" alt="Komsel Pemuda">
+    <div class="schedule-text slide-left">
+      <h2>Selasa</h2>
+      <p>Komsel pemuda 19.00–21.00.</p>
+    </div>
+  </div>
+
+  <div class="schedule-item">
+    <!-- ✅ Ganti gambar Rabu -->
+    <img src="rabu.jpeg" class="slide-left" alt="Komsel Umum">
+    <div class="schedule-text slide-right">
+      <h2>Rabu</h2>
+      <p>Komsel umum 19.30–21.30.</p>
+    </div>
+  </div>
+
+  <div class="schedule-item">
+    <!-- ✅ Ganti gambar Kamis -->
+    <img src="kamis.png" class="slide-right" alt="Latihan PNW">
+    <div class="schedule-text slide-left">
+      <h2>Kamis</h2>
+      <p>Latihan PNW 19.00–21.00.</p>
+    </div>
+  </div>
+
+  <div class="schedule-item">
+    <img src="jumat.jpeg" class="slide-left" alt="Doa Jumat">
+    <div class="schedule-text slide-right">
+      <h2>Jumat</h2>
+      <p>Doa Jumat 19.30–21.00.</p>
+    </div>
+  </div>
+
+  <div class="schedule-item">
+    <img src="sabtu.jpeg" class="slide-right" alt="Ibadah Remaja dan Pemuda">
+    <div class="schedule-text slide-left">
+      <h2>Sabtu</h2>
+      <p>Ibadah remaja 16.00–17.00</p>
+      <p>Ibadah pemuda 19.00–21.00</p>
+    </div>
+  </div>
+</div>
+
+
+<footer>
+  <p>&copy; 2025 GPDI. All Rights Reserved.</p>
+</footer>
+
+<script>
+// Animasi schedule
+const items = document.querySelectorAll('.schedule-item, .slide-left, .slide-right');
+const firstItem = document.querySelector('#first-item');
+if (firstItem) {
+  setTimeout(() => {
+    firstItem.classList.add('visible');
+    firstItem.querySelectorAll('.slide-left, .slide-right').forEach(el => {
+      el.classList.add('visible');
+    });
+  }, 400);
+}
+window.addEventListener('scroll', () => {
+  const triggerBottom = window.innerHeight * 0.85;
+  items.forEach(el => {
+    const top = el.getBoundingClientRect().top;
+    if (top < triggerBottom) el.classList.add('visible');
+  });
+});
+
+// Burger menu
+const burger = document.querySelector('.burger');
+const nav = document.querySelector('nav');
+burger.addEventListener('click', () => {
+  nav.classList.toggle('active');
+});
+
+// Highlight halaman aktif otomatis
+const currentPage = window.location.pathname.split("/").pop();
+document.querySelectorAll("nav .menu li a").forEach(link => {
+  if (link.getAttribute("href") === currentPage) link.classList.add("active");
+});
+// === EVENT SLIDER ===
+const slides = document.querySelector('.slides');
+const slideItems = document.querySelectorAll('.slide');
+const nextBtn = document.querySelector('.next');
+const prevBtn = document.querySelector('.prev');
+let index = 0;
+
+function showSlide(i) {
+  slideItems.forEach(slide => slide.classList.remove('active'));
+
+  if (i >= slideItems.length) index = 0;
+  if (i < 0) index = slideItems.length - 1;
+
+  slideItems[index].classList.add('active');
+}
+
+/* tampilkan slide pertama */
+showSlide(index);
+
+nextBtn.addEventListener('click', () => {
+  index++;
+  showSlide(index);
+});
+
+prevBtn.addEventListener('click', () => {
+  index--;
+  showSlide(index);
+});
+
+/* auto slide */
+setInterval(() => {
+  index++;
+  showSlide(index);
+}, 6000);
+
+
+</script>
+</body>
+</html>

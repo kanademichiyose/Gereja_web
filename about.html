@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>About Us - GPDI</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+  --accent: #f4d03f;
+  --bg-page: #f3f4f6;
+  --text-dark: #222;
+  --bg-hero: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80");
+  --bg-mission: url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1800&q=80");
+}
+
+* {margin:0; padding:0; box-sizing:border-box;}
+body {
+  font-family:"Poppins",Arial,sans-serif;
+  background:var(--bg-page);
+  color:var(--text-dark);
+}
+
+/* ==== NAVBAR (sama seperti home/schedule) ==== */
+nav {
+  position:fixed;
+  top:0; left:0;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:8px 25px;
+  background:rgba(28,28,28,0.9);
+  color:white;
+  z-index:1000;
+  backdrop-filter:blur(6px);
+  transition:all .3s ease;
+}
+nav .logo {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+nav .logo img {
+  width:40px; height:40px;
+}
+nav .logo span {
+  font-size:20px; font-weight:bold;
+}
+nav .menu {
+  display:flex;
+  gap:30px;
+  margin-right:20px;
+  list-style:none;
+  transition:max-height .4s ease;
+}
+nav .menu li a {
+  color:white;
+  text-decoration:none;
+  font-size:16px;
+  font-weight:500;
+  padding:6px 12px;
+  border-radius:6px;
+  transition:color .3s,background .3s;
+}
+nav .menu li a:hover {
+  background-color:var(--accent);
+  color:#000;
+}
+nav .menu li a.active {
+  color:var(--accent);
+  font-weight:600;
+}
+
+/* ==== BURGER ==== */
+.burger {
+  display:none;
+  width:22px; height:16px;
+  position:absolute;
+  right:20px; top:50%;
+  transform:translateY(-50%);
+  cursor:pointer;
+  transition:transform .3s ease;
+}
+.burger span {
+  position:absolute;
+  height:2px; width:100%;
+  background:white;
+  left:0;
+  transition:all .3s ease;
+}
+.burger span:nth-child(1){top:0;}
+.burger span:nth-child(2){top:8px;}
+.burger span:nth-child(3){top:16px;}
+nav.active .burger span:nth-child(1){transform:rotate(45deg); top:8px;}
+nav.active .burger span:nth-child(2){opacity:0;}
+nav.active .burger span:nth-child(3){transform:rotate(-45deg); top:8px;}
+
+@media(max-width:768px){
+  .burger{display:block;}
+  nav .menu{
+    flex-direction:column;
+    background:rgba(28,28,28,0.95);
+    position:absolute;
+    top:54px; 
+    right:-16px;
+    width:200px;
+    max-height:0;
+    overflow:hidden;
+    padding:0;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.2);
+  }
+  nav.active .menu{max-height:500px; padding:15px 0;}
+  nav .menu li{text-align:center; margin:9px 0;}
+}
+
+/* ==== HERO ==== */
+.hero {
+  background:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), var(--bg-hero) center/cover;
+  height:auto; min-height:480px;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  text-align:center; color:#fff;
+  margin-top:55px; padding:60px 20px;
+}
+.hero .content {
+  max-width:900px;
+  opacity:0; transform:translateY(50px);
+}
+.hero .content.animate {animation:fadeInUp 2s ease forwards;}
+.hero .content h1 {
+  font-size:52px; margin-bottom:20px;
+}
+.hero .content p {
+  font-size:22px; line-height:1.8;
+  margin-bottom:30px;
+}
+
+/* ==== Visi & Misi ==== */
+.mission-vision {
+  position:relative;
+  width:100%;
+  padding:80px 10%;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  color:#fff;
+  overflow:hidden;
+}
+.mission-vision::before {
+  content:"";
+  position:absolute; inset:0;
+  background-image:var(--bg-mission);
+  background-size:cover;
+  background-position:center;
+  filter:blur(8px) brightness(0.65);
+  transform:scale(1.05);
+  z-index:0;
+}
+.mission-vision::after {
+  content:"";
+  position:absolute; inset:0;
+  background:rgba(0,0,0,0.45);
+  z-index:1;
+}
+.mission-vision .title {
+  position:absolute;
+  top:25px; left:50%;
+  transform:translateX(-50%);
+  font-size:14px; letter-spacing:3px;
+  color:rgba(255,255,255,0.85);
+  z-index:2;
+}
+.visi, .misi {
+  position:relative; z-index:2;
+  opacity:0;
+}
+.visi.animate {animation:slideInLeft 2s ease forwards;}
+.misi.animate {animation:slideInRight 2s ease forwards;}
+.visi {padding-right:30px; border-right:1px solid rgba(255,255,255,0.3);}
+.misi {margin-top:100px; padding-left:30px;}
+.visi h2, .misi h2 {color:var(--accent); margin-bottom:15px;}
+.visi h2 {font-size:32px;}
+.misi h2 {font-size:26px;}
+.visi p, .misi p {font-size:18px; line-height:1.7; text-align:justify;}
+
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-80px);}to{opacity:1;transform:translateX(0);}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(80px);}to{opacity:1;transform:translateX(0);}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(50px);}to{opacity:1;transform:translateY(0);}}
+
+/* ==== FOOTER ==== */
+footer{text-align:center; padding:22px; background:#111; color:#fff;}
+
+@media(max-width:900px){
+  .mission-vision{grid-template-columns:1fr; padding:60px 20px; gap:30px;}
+  .visi{border-right:none; padding-right:0;}
+  .misi{margin-top:20px; padding-left:0;}
+  .hero .content h1{font-size:42px;}
+  .hero .content p{font-size:20px;}
+}
+/* ==== STRUKTUR GEREJA ==== */
+.church-structure {
+  position: relative;
+  padding: 90px 20px;
+  background: linear-gradient(
+      rgba(15,15,15,0.85),
+      rgba(15,15,15,0.9)
+    ),
+    url("https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=1800&q=80")
+    center/cover;
+  color: #fff;
+  text-align: center;
+}
+
+.church-structure h2 {
+  color: var(--accent);
+  font-size: 34px;
+  margin-bottom: 35px;
+}
+
+.structure-wrapper {
+  max-width: 1000px;
+  margin: auto;
+  background: rgba(245,245,245,0.95); /* abu terang */
+  border-radius: 18px;
+  padding: 0px;
+  box-shadow: 
+    0 10px 30px rgba(0,0,0,0.15),
+    inset 0 0 0 1px rgba(255,255,255,0.6);
+}
+
+
+.structure-canvas {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  border-radius: 12px;
+  background: #e9ecef;
+  padding: 20px;
+}
+
+
+.structure-canvas:active {
+  cursor: grabbing;
+}
+
+.structure-canvas img {
+  transform-origin: center center;
+  transition: transform 0.1s ease;
+  user-select: none;
+  pointer-events: none;
+}
+.structure-canvas img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: auto;
+  pointer-events: none;
+}
+
+.hint {
+  margin-top: 15px;
+  font-size: 14px;
+  opacity: 0.75;
+}
+
+@media(max-width:768px){
+  .structure-canvas {
+    height: 360px;
+  }
+}
+/* ==== ANIMASI CONTAINER STRUKTUR ==== */
+.structure-wrapper {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.structure-wrapper.animate {
+  animation: fadeUpContainer 1.6s ease forwards;
+}
+
+@keyframes fadeUpContainer {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <img src="logo.jpeg" alt="Logo GPDI">
+    <span>GPDI</span>
+  </div>
+
+  <div class="burger">
+    <span></span><span></span><span></span>
+  </div>
+
+  <ul class="menu">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="schedule.html">Schedule</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.html">Contact Us</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="content">
+    <h1>About Us</h1>
+    <p>Gereja Immanuel berdiri dengan panggilan untuk menjadi terang dan garam bagi dunia. Kami percaya setiap orang dipanggil untuk bertumbuh dalam kasih, pengharapan, dan iman kepada Yesus Kristus.</p>
+
+    <!-- ✅ Tambahan konten GPdI Duta Bandara Permai -->
+    <div class="about-extra" style="text-align:justify; color:#fff; font-size:18px; line-height:1.8; margin-top:40px;">
+      <h2 style="color:#f4d03f;">Tentang Gereja GPdI Duta Bandara Permai</h2>
+      <p><strong>GPdI Duta Bandara Permai</strong> adalah gereja beraliran <strong>Pentakosta</strong>, yang berdiri sejak <strong>tahun 1996</strong> di wilayah Dadap, Kosambi, Tangerang. Pelayanan gereja ini berawal dari kegiatan sederhana berupa bimbingan belajar dan Sekolah Minggu di rumah kontrakan, yang diikuti oleh anak-anak dari berbagai latar belakang dengan semangat kasih dan toleransi.</p>
+      <p>Dari pelayanan kecil itu, ibadah bagi anak-anak dan orang dewasa mulai diadakan secara rutin. Seiring pertumbuhan jemaat, gereja kemudian bergabung secara resmi dengan <strong>Gereja Pantekosta di Indonesia (GPdI)</strong> dan mendapat pengakuan dari pemerintah daerah serta Departemen Agama. Hingga kini, meski izin bangunan masih dalam proses, kegiatan gereja tetap berjalan lancar berkat dukungan dan toleransi warga sekitar.</p>
+      <p>Gembala jemaat berasal dari <strong>Manado</strong> dan telah menempuh pendidikan di <strong>Sekolah Alkitab</strong> sejak usia muda. Dengan panggilan hati yang tulus untuk melayani, beliau meniti perjalanan pelayanan dari <strong>Pekerja (P.A.L)</strong> hingga menjadi <strong>Pendeta penuh</strong>, melalui proses panjang dalam kesetiaan dan pengabdian.</p>
+      <p>Kini, GPdI Duta Bandara Permai terus aktif melayani melalui berbagai kegiatan seperti:</p>
+      <ul style="text-align:left; margin-left:40px;">
+        <li>Ibadah Umum setiap <strong>Minggu pukul 08.00–10.00</strong></li>
+        <li>Sekolah Minggu untuk anak-anak</li>
+        <li>Komsel dan doa bersama di hari-hari tertentu</li>
+        <li>Pelayanan sosial dan pembinaan generasi muda</li>
+      </ul>
+      <p>Dengan visi <em>“Melayani Tuhan melalui pelayanan kepada manusia”</em>, gereja ini berkomitmen membimbing jemaat agar hidup dalam kasih, takut akan Tuhan, dan menjadi berkat bagi masyarakat sekitar.</p>
+    </div>
+  </div>
+</section>
+
+<section class="mission-vision">
+  <div class="title">OUR MISSION & VISION</div>
+  <div class="visi">
+    <h2>Visi Gereja</h2>
+    <p>Visi GPdI jemaat Filadelfia adalah “Menuju Kesempurnaan Gereja” atau menjadi gereja yang disempurnakan. Tuhan memberikan visi ini kepada gembala jemaat melalui doa dan pergumulan yang panjang. Visi ini menegaskan bahwa perjalanan iman kita adalah proses menuju kedewasaan rohani, di mana jemaat dapat semakin serupa dengan Kristus dalam segala aspek kehidupan.</p>
+  </div>
+  <div class="misi">
+    <h2>Misi Gereja</h2>
+    <p>Misi untuk mencapai visi ini adalah melalui penyampaian kebenaran Firman Tuhan dan pimpinan Roh Kudus, sehingga kita semua dapat bertumbuh dalam iman yang teguh, tidak diombang-ambingkan oleh ajaran palsu, tetapi berpegang pada Kristus sebagai Kepala Gereja. Misi ini juga mencakup pelayanan kasih kepada sesama, pembinaan generasi muda, dan penginjilan agar nama Tuhan dipermuliakan di tengah masyarakat.</p>
+  </div>
+</section>
+<!-- ==== STRUKTUR GEREJA ==== -->
+<section class="church-structure">
+  <h2>Struktur Organisasi Gereja</h2>
+
+  <div class="structure-wrapper">
+    <div class="structure-canvas">
+      <img src="structure.jpeg" alt="Struktur Gereja GPdI" id="structureImage">
+    </div>
+  </div>
+
+</section>
+
+<footer>
+  <p>&copy; 2025 GPDI. All Rights Reserved.</p>
+</footer>
+
+<script>
+// animasi scroll
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('animate');
+      observer.unobserve(e.target);
+    }
+  });
+},{threshold:0.3});
+document
+  .querySelectorAll('.hero .content, .visi, .misi, .structure-wrapper')
+  .forEach(el => observer.observe(el));
+
+
+// burger menu
+const burger=document.querySelector('.burger');
+const nav=document.querySelector('nav');
+burger.addEventListener('click',()=>nav.classList.toggle('active'));
+
+// highlight halaman aktif
+const currentPage=window.location.pathname.split("/").pop();
+document.querySelectorAll("nav .menu li a").forEach(link=>{
+  if(link.getAttribute("href")===currentPage) link.classList.add("active");
+});
+
+</script>
+
+
+</body>
+</html>

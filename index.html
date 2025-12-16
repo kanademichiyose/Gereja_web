@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPDI</title>
+  <!-- Font & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      color: #333;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Navbar */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 25px;
+      background: rgba(28,28,28,0.9);
+      color: white;
+      z-index: 1000;
+      backdrop-filter: blur(6px);
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+    nav .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    nav .logo img {
+      width: 40px;
+      height: 40px;
+    }
+    nav .logo span {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    nav .menu {
+      display: flex;
+      gap: 30px;
+      margin-right: 20px;
+      list-style: none;
+      transition: max-height 0.4s ease;
+    }
+    nav .menu li a {
+      position: relative;
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      transition: color 0.3s, transform 0.2s;
+    }
+    nav .menu li a:hover {
+      color: #f4d03f;
+      transform: scale(1.05);
+    }
+
+    /* ==== BURGER MENU STYLING (P.S.P. STYLE) ==== */
+/* ==== BURGER MENU STYLING (ubah ukuran & posisi kanan) ==== */
+.burger {
+  display: none;
+  width: 22px;        /* dari 28px jadi lebih kecil */
+  height: 16px;       /* dari 20px jadi lebih kecil */
+  position: absolute; /* ubah jadi absolute agar bisa menempel ke kanan */
+  right: 20px;        /* jarak dari sisi kanan navbar */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.burger span {
+  position: absolute;
+  height: 2px;        /* garis lebih tipis */
+  width: 100%;
+  background: white;
+  left: 0;
+  transition: all 0.3s ease;
+}
+
+    .burger span:nth-child(1) { top: 0; }
+    .burger span:nth-child(2) { top: 8px; }
+    .burger span:nth-child(3) { top: 16px; }
+
+    nav.active .burger span:nth-child(1) {
+      transform: rotate(45deg);
+      top: 8px;
+    }
+    nav.active .burger span:nth-child(2) {
+      opacity: 0;
+    }
+    nav.active .burger span:nth-child(3) {
+      transform: rotate(-45deg);
+      top: 8px;
+    }
+
+    /* Responsive Menu Behavior */
+    @media (max-width: 768px) {
+      .burger {
+        display: block;
+      }
+        nav .menu {
+        flex-direction: column;
+        background: rgba(28,28,28,0.95);
+        position: absolute;
+        top: 38px;
+        right: -18px;         /* ⬅️ tambahkan supaya menempel di kanan */
+        width: 200px;        /* ⬅️ ubah dari 100% jadi lebih kecil */
+        max-height: 0;
+        overflow: hidden;
+        padding: 0;
+        border-radius: 8px;  /* ⬅️ biar sudutnya sedikit halus */
+        border: 1px solid rgba(255,255,255,0.2);
+        transition: max-height 0.4s ease;
+      }
+      nav.active .menu {
+        max-height: 500px;
+        padding: 15px 0;
+      }
+      nav .menu li {
+        text-align: center;
+        margin: 9px 0;
+      }
+      
+    }
+
+    /* Slideshow */
+    .slideshow {
+      position: relative;
+      height: 400px;
+      overflow: hidden;
+      margin-top: 50px;
+    }
+    .slideshow img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0; left: 0;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .slideshow img.active {
+      opacity: 1;
+    }
+
+    /* Section umum */
+    section {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease;
+    }
+    section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Kata Sambutan */
+    .sambutan {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 50px;
+      background: linear-gradient(135deg, #e3e3e3, #f5f5f5);
+      color: #333;
+    }
+    .sambutan .text {
+      width: 60%;
+    }
+    .sambutan .text h2 {
+      font-size: clamp(20px, 3vw, 28px);
+      margin-bottom: 15px;
+    }
+    .sambutan .text p {
+      font-size: 18px;
+      line-height: 1.6;
+    }
+    .sambutan img {
+      width: 400px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    /* Jadwal Ibadah */
+    .jadwal {
+      text-align: center;
+      padding: 60px 20px;
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1505691938895-1758d7feb511') center/cover no-repeat;
+      color: #fff;
+    }
+    .jadwal h2 {
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+    .jadwal p {
+      font-size: 20px;
+      margin: 8px 0;
+    }
+    .jadwal a {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 25px;
+      background: #fff;
+      color: #000;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .jadwal a:hover {
+      background: #ddd;
+    }
+
+    /* Firman Tuhan */
+    .firman {
+      text-align: center;
+      padding: 50px 20px;
+      background: #2b2b2b;
+      color: #f1f1f1;
+    }
+    .firman h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+    .firman p {
+      font-size: 20px;
+      max-width: 800px;
+      margin: auto;
+      line-height: 1.6;
+      color: #e0e0e0;
+    }
+
+    /* Lokasi */
+    .lokasi {
+      text-align: center;
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #e3e3e3, #f5f5f5);
+      color: #333;
+    }
+
+    .lokasi h2 {
+      font-size: 28px;
+      margin-bottom: 30px;
+      color: #222;
+    }
+
+    .map-alamat-container {
+      display: flex;
+      max-width: 1000px;
+      height: 400px;
+      margin: auto;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      background: #fff;
+    }
+    .map-box {
+      flex: 2;
+    }
+    .alamat-box {
+      flex: 1;
+      padding: 30px;
+      text-align: left;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .alamat-box h3 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      color: #111;
+    }
+    .alamat-box p {
+      font-size: 16px;
+      margin: 8px 0;
+      color: #444;
+      line-height: 1.6;
+    }
+    .alamat-box i {
+      margin-right: 8px;
+      color: #444;
+    }
+
+    /* Floating Social Buttons */
+    .social-buttons {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 1000;
+    }
+    .social-buttons a {
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #fff;
+      color: #000;
+      font-size: 22px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.3s, background 0.3s, color 0.3s;
+    }
+    .social-buttons a:hover {
+      transform: scale(1.15);
+      background: #000;
+      color: #fff;
+    }
+
+    @media (max-width: 1024px) {
+      .sambutan {
+        flex-direction: column;
+        text-align: center;
+      }
+      .sambutan .text {
+        width: 100%;
+      }
+      .sambutan img {
+        width: 80%;
+        margin-top: 25px;
+      }
+      .map-alamat-container {
+        flex-direction: column;
+        height: auto;
+      }
+      .map-box iframe {
+        width: 100%;
+        height: 300px;
+      }
+      .alamat-box {
+        text-align: center;
+      }
+    }
+        /* Efek hover & halaman aktif */
+    nav .menu li a {
+      position: relative;
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      transition: color 0.3s, background 0.3s;
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+
+    /* Efek hover (warna latar muncul saat diarahkan) */
+    nav .menu li a:hover {
+      background-color: #f4d03f;
+      color: #000;
+    }
+
+    /* Warna menu aktif (halaman saat ini) */
+    nav .menu li a.active {
+      color: #f4d03f;
+      font-weight: 600;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">
+      <img src="logo.jpeg" alt="Logo GPDI">
+      <span>GPDI</span>
+    </div>
+
+    <!-- Ganti isi burger jadi 3 garis -->
+    <div class="burger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <ul class="menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="schedule.html">Schedule</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <!-- Slideshow -->
+  <div class="slideshow">
+    <img src="gambar1.jpg" class="active">
+    <img src="gambar2.jpg">
+    <img src="gambar3.jpg">
+    <img src="gambar4.jpg">
+    <img src="gambar5.jpg">
+  </div>
+
+  <!-- Kata Sambutan -->
+  <section class="sambutan">
+    <div class="text">
+      <h2>Sambutan Gembala Jemaat</h2>
+      <p>Shalom, selamat datang di Gereja Immanuel. Kami percaya bahwa kasih Tuhan selalu baru setiap hari. Mari kita bertumbuh bersama dalam iman, pengharapan, dan kasih. Tuhan Yesus memberkati.</p>
+    </div>
+    <img src="foto_pendeta.jpeg" alt="Pendeta">
+  </section>
+
+  <!-- Jadwal Ibadah -->
+  <section class="jadwal">
+    <h2>Ibadah Raya Minggu</h2>
+    <p>Pagi: 08.00 - 10.00</p>
+    <p>Siang: 11.00 - 13.00</p>
+    <a href="schedule.html">Selengkapnya</a>
+  </section>
+
+  <!-- Firman Tuhan -->
+  <section class="firman">
+    <h2>Firman Tuhan</h2>
+    <p>"Sebab di mana dua atau tiga orang berkumpul dalam nama-Ku, di situ Aku ada di tengah-tengah mereka." <br> (Matius 18:20)</p>
+  </section>
+
+  <!-- Lokasi Gereja -->
+  <section class="lokasi">
+    <h2>Lokasi Gereja</h2>
+    <div class="map-alamat-container">
+      <div class="map-box">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3967.2728392235313!2d106.68261417474945!3d-6.093903093892423!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6a0304121fae81%3A0x935c17bade76b235!2sGPdI%20DUTA%20BANDARA%20PERMAI!5e0!3m2!1sid!2sid!4v1758609056925!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <div class="alamat-box">
+        <h3>Alamat Gereja</h3>
+        <p><strong>GPDI</strong></p>
+        <p>Jl. Perumahan Duta Bandara Permai</p>
+        <p>Blok Zu 2 No.9, Jatimulya, Kec. Kosambi, Kabupaten Tangerang</p>
+        <p><i class="fas fa-phone"></i>+62 858-1312-4990</p>
+        <p><i class="fas fa-envelope"></i> info@gpdi.org</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Floating Social Media -->
+  <div class="social-buttons">
+    <a href="https://youtube.com/@gpdidbp?si=Z0OVd813UdslwlBd" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://www.instagram.com/gpdi.dbp?utm_source=ig_web_button_share_sheet&igsh=Y3hnamd3Y3c2YzZ2" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://wa.me/+6285813124990" target="_blank"><i class="fab fa-whatsapp"></i></a>
+  </div>
+
+  <script>
+    // Slideshow
+    let slides = document.querySelectorAll(".slideshow img");
+    let index = 0;
+    setInterval(() => {
+      slides[index].classList.remove("active");
+      index = (index + 1) % slides.length;
+      slides[index].classList.add("active");
+    }, 4000);
+
+    // Scroll Animation
+    const sections = document.querySelectorAll("section");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add("show");
+      });
+    }, { threshold: 0.2 });
+    sections.forEach(sec => observer.observe(sec));
+
+    // Burger Menu
+    const burger = document.querySelector('.burger');
+    const nav = document.querySelector('nav');
+    burger.addEventListener('click', () => {
+      nav.classList.toggle('active');
+    });
+    // Tandai menu aktif otomatis berdasarkan halaman
+const currentPage = window.location.pathname.split("/").pop();
+document.querySelectorAll("nav .menu li a").forEach(link => {
+  if (link.getAttribute("href") === currentPage) {
+    link.classList.add("active");
+  }
+});
+
+  </script>
+
+</body>
+</html>

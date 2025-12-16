@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Structure - GPDI</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff9e6;
+      color: #222;
+      overflow-x: hidden;
+    }
+
+    /* Navbar (copy persis dari home.html) */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 25px;
+      background: rgba(28,28,28,0.9);
+      color: white;
+      z-index: 1000;
+      backdrop-filter: blur(6px);
+      box-sizing: border-box;
+    }
+    nav .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    nav .logo img {
+      width: 40px;
+      height: 40px;
+    }
+    nav .logo span {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    nav .menu {
+      display: flex;
+      gap: 30px;
+      margin-right: 20px;
+      list-style: none;
+    }
+    nav .menu li a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    nav .menu li a:hover {
+      color: #f4d03f;
+    }
+
+    /* === HALAMAN STRUKTUR === */
+    .container {
+        margin-top: 120px;
+        padding: 40px 20px;
+        text-align: center;
+    }
+    h1 {
+        font-size: 38px;
+        margin-bottom: 50px;
+        color: #b89000;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .chart {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+    .person {
+        text-align: center;
+        position: relative;
+    }
+    .circle {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: linear-gradient(to bottom right, #fff, #f3f3f3);
+        border: 3px solid #d4af37;
+        margin: 0 auto 10px;
+        background-size: cover;
+        background-position: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .person h3 {
+        margin: 5px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+    }
+    .person p {
+        font-size: 14px;
+        color: #666;
+    }
+    .level-1 {
+        position: relative;
+        margin-bottom: 80px;
+    }
+    .level-1::after {
+        content: "";
+        position: absolute;
+        bottom: -40px;
+        left: 50%;
+        width: 2px;
+        height: 40px;
+        background: #d4af37;
+        transform: translateX(-50%);
+    }
+    .level-2 {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        width: 100%;
+        max-width: 1100px;
+        position: relative;
+        margin-bottom: 100px;
+    }
+    .level-2::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 7%;
+        right: 7%;
+        height: 2px;
+        background: #d4af37;
+    }
+    .level-2 .person {
+        margin-top: 40px;
+    }
+    .level-2 .person::before {
+        content: "";
+        position: absolute;
+        top: -40px;
+        left: 50%;
+        width: 2px;
+        height: 40px;
+        background: #d4af37;
+        transform: translateX(-50%);
+    }
+    .level-3 {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 60px;
+        margin-top: 30px;
+    }
+    .level-3 .person::before {
+        content: "";
+        position: absolute;
+        top: -40px;
+        left: 50%;
+        width: 2px;
+        height: 40px;
+        background: #d4af37;
+        transform: translateX(-50%);
+    }
+    footer {
+        text-align: center;
+        padding: 25px;
+        background: #111;
+        color: #ccc;
+        margin-top: 60px;
+        border-top: 1px solid #222;
+    }
+    @media(max-width: 768px) {
+        .level-2 {
+            flex-direction: column;
+            align-items: center;
+        }
+        .level-2::before {
+            display: none;
+        }
+    }
+</style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">
+      <img src="logo.jpeg" alt="Logo GPDI">
+      <span>GPDI</span>
+    </div>
+    <ul class="menu">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="schedule.html">Schedule</a></li>
+        <li><a href="structure.html">Structure</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <h1>Struktur Organisasi GPDI</h1>
+
+    <div class="chart">
+        <!-- Pendeta -->
+        <div class="level-1 person">
+            <div class="circle"></div>
+            <h3>Pdt. Nama Pendeta</h3>
+            <p>Pendeta Jemaat</p>
+        </div>
+
+        <!-- 7 Tua-tua Sidang + Wakil Pendeta -->
+        <div class="level-2">
+            <!-- 1 -->
+            <div class="person">
+                <div class="circle"></div>
+                <h3>Wakil Pendeta</h3>
+                <p>Wakil Gembala Jemaat</p>
+            </div>
+
+            <!-- 2 -->
+            <div class="person">
+                <div class="circle"></div>
+                <h3>Tua-tua 2</h3>
+                <p>Tua Sidang</p>
+                <div class="level-3">
+                    <div class="person">
+                        <div class="circle"></div>
+                        <h3>Anggota 2</h3>
+                        <p>Asisten</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 -->
+            <div class="person">
+                <div class="circle"></div>
+                <h3>Tua-tua 3</h3>
+                <p>Tua Sidang</p>
+                <div class="level-3">
+                    <div class="person">
+                        <div class="circle"></div>
+                        <h3>Anggota 3</h3>
+                        <p>Asisten</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 -->
+            <div class="person">
+                <div class="circle"></div>
+                <h3>Tua-tua 4</h3>
+                <p>Tua Sidang</p>
+                <div class="level-3">
+                    <div class="person">
+                        <div class="circle"></div>
+                        <h3>Anggota 4</h3>
+                        <p>Asisten</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5 -->
+            <div class="person">
+                <div class="circle"></div>
+                <h3>Tua-tua 5</h3>
+                <p>Tua Sidang</p>
+                <div class="level-3">
+                    <div class="person">
+                        <div class="circle"></div>
+                        <h3>Anggota 5</h3>
+                        <p>Asisten</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6 -->
+            <div class="person">
+                <div class="circle"></div>
+                <h3>Tua-tua 6</h3>
+                <p>Tua Sidang</p>
+                <div class="level-3">
+                    <div class="person">
+                        <div class="circle"></div>
+                        <h3>Anggota 6</h3>
+                        <p>Asisten</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7 -->
+            <div class="person">
+                <div class="circle"></div>
+                <h3>Tua-tua 7</h3>
+                <p>Tua Sidang</p>
+                <div class="level-3">
+                    <div class="person">
+                        <div class="circle"></div>
+                        <h3>Anggota 7</h3>
+                        <p>Asisten</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 GPDI. All Rights Reserved.</p>
+</footer>
+
+<script src="https://kit.fontawesome.com/a2e0a3f6d4.js" crossorigin="anonymous"></script>
+</body>
+</html>
